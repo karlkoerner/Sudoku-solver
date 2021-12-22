@@ -16,8 +16,10 @@ rect_y = 55
 BLACK = (0, 0, 0)
 GREEN = (100, 255, 100)
 WHITE = (255, 255, 255)
-GREY = (220, 220, 220)
+LIGHT_GREY = (220, 220, 220)
+DARK_GREY = (100, 100, 100)
 RED = (255, 0, 0)
+SPEED = 0.25
 
 button_fast = Button(WHITE, 90, 520, 150, 50, text='fast algorithm')
 button_visual = Button(WHITE, 250, 520, 150, 50, text='visualize algorithm')
@@ -26,6 +28,14 @@ text_solving = font2.render('Solving in progress...', 1, (255, 0, 0))
 def message_to_screen(msg, color, position, Font):
     text = Font.render(msg, True, color)
     screen.blit(text, position)
+
+def set_default():
+    default = []
+    for i, line in enumerate(GRID):
+        for j, num in enumerate(line):
+            if num != 0:
+                default.append((i, j))
+    return default
 
 def draw_lines():
     for i in range(1, 10):
@@ -39,11 +49,14 @@ def draw_lines():
     for i, row in enumerate(GRID):
         for j, num in enumerate(row):
             if num != 0:
-                message_to_screen(str(num), BLACK, (j * SQUARE + 20, i * SQUARE + 15), Font)
+                if (i, j) in default:
+                    message_to_screen(str(num), BLACK, (j * SQUARE + 20, i * SQUARE + 15), Font)
+                else:
+                    message_to_screen(str(num), DARK_GREY, (j * SQUARE + 20, i * SQUARE + 15), Font)
 
 def fill_pg():
-    sleep(0.25)
-    screen.fill(GREY)
+    sleep(SPEED)
+    screen.fill(LIGHT_GREY)
     draw_lines()
     pos = get_pos()
     if not pos:
@@ -53,7 +66,7 @@ def fill_pg():
     for n in range(1, 10):
         if check(n, pos) == True:
             GRID[i][j] = n
-            screen.fill(GREY)
+            screen.fill(LIGHT_GREY)
             draw_lines()
             message_to_screen(str(n), BLACK, (j * SQUARE + 20, i * SQUARE + 15), Font)
             pygame.draw.rect(screen, GREEN, [j * SQUARE, i * SQUARE, SQUARE, SQUARE], width=4 )
@@ -61,13 +74,15 @@ def fill_pg():
             if fill_pg():
                 return True
             GRID[i][j] = 0
-            screen.fill(GREY)
+            screen.fill(LIGHT_GREY)
             draw_lines()
             message_to_screen("0", BLACK, (j * SQUARE + 20, i * SQUARE + 15), Font)
+            pygame.draw.rect(screen, RED, [j * SQUARE, i * SQUARE, SQUARE, SQUARE], width=4 )
+            sleep(SPEED)
             pygame.display.update()
     return False
 
-
+default = set_default()
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -91,7 +106,8 @@ while True:
                 print(int(rect_x / SQUARE))
                 GRID[int(rect_y / SQUARE)][int(rect_x / SQUARE)] = 0
             if event.key == K_1 or event.key == K_2 or event.key == K_3 or event.key == K_4 or event.key == K_5 or event.key == K_6 or event.key == K_7 or event.key == K_8 or event.key == K_9:
-                GRID[int(rect_y / SQUARE)][int(rect_x / SQUARE)] = int(event.unicode)
+                if (int(rect_y / SQUARE), int(rect_x / SQUARE)) not in default:
+                    GRID[int(rect_y / SQUARE)][int(rect_x / SQUARE)] = int(event.unicode)
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             if button_visual.is_under(pos):
@@ -103,7 +119,7 @@ while True:
                 fill()
 
 
-    screen.fill(GREY)
+    screen.fill(LIGHT_GREY)
     button_fast.draw(screen)
     button_visual.draw(screen)
     draw_lines()
