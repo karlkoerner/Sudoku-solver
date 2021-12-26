@@ -9,6 +9,7 @@ GRID = [[4, 1, 0, 0, 6, 0, 0, 7, 0],
         [1, 0, 0, 4, 9, 6, 8, 0, 0],
         [2, 8, 4, 0, 0, 0, 1, 9, 6]]
 
+#returns True if a given number is repeated in the same row, column or square in the GRID
 def check(num, pos):
     if num == 0:
         return False
@@ -35,6 +36,8 @@ def check(num, pos):
                 return False
     return True
 
+#always returns the next empty position in the GRID
+#--> if there is no empty position left it returns false => Sudoku solved
 def get_pos():
     for i, row in enumerate(GRID):
         for j, num in enumerate(row):
@@ -42,6 +45,10 @@ def get_pos():
                 return (i, j)
     return None
 
+#main solving recursive method:
+# goes through grid and fills up every empty position (get_pos) if there is no possible solution for a digit from 1-9 to be filled in an empty position
+# it goes back until is hits a previous position, where another solution is possible, then tries again from that position forward
+# sudoku is solved, when there is no empty position left
 def fill():
     pos = get_pos()
     if not pos:
@@ -56,7 +63,3 @@ def fill():
                 return True
             GRID[i][j] = 0
     return False
-
-def main():
-    fill()
-    print(GRID)
