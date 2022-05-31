@@ -7,6 +7,6 @@
 - hit backspace to completely delete a number
 
 There are two possibilities to solve the sudoku:
-1. The fast algorithm just doeas the work on the backand and prints out the result in the end (much faster)
+1. The fast algorithm just does the work in the background and prints out the result in the end (much faster)
 2. The visualized algorithm prints every step of the recursive function to the screen (speed can be changed in the Code by changing the SPEED variable)
    --> very slow especially when solving dificult sudokus
