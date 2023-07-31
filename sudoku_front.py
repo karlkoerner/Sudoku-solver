@@ -62,9 +62,9 @@ def draw_GRID():
         for j, num in enumerate(row):
             if num != 0:
                 if (i, j) in default:
-                    message_to_screen(str(num), BLACK, (j * SQUARE + 20, i * SQUARE + 15), Font)
+                    message_to_screen(str(num), BLACK, (j * SQUARE + 5, i * SQUARE), Font)
                 else:
-                    message_to_screen(str(num), DARK_GREY, (j * SQUARE + 20, i * SQUARE + 15), Font)
+                    message_to_screen(str(num), DARK_GREY, (j * SQUARE + 5, i * SQUARE), Font)
 
 # represents the same functionality as the "fill()" function from sudoku_solve but visualizes every step and draws it to the screen
 def fill_pg():
@@ -82,7 +82,7 @@ def fill_pg():
             GRID[i][j] = n
             screen.fill(LIGHT_GREY)
             draw_GRID()
-            message_to_screen(str(n), BLACK, (j * SQUARE + 20, i * SQUARE + 15), Font)
+            message_to_screen(str(n), BLACK, (j * SQUARE + 5, i * SQUARE), Font)
             pygame.draw.rect(screen, GREEN, [j * SQUARE, i * SQUARE, SQUARE, SQUARE], width=4 )
             pygame.display.update()
             if fill_pg():
@@ -90,7 +90,7 @@ def fill_pg():
             GRID[i][j] = 0
             screen.fill(LIGHT_GREY)
             draw_GRID()
-            message_to_screen("0", BLACK, (j * SQUARE + 20, i * SQUARE + 15), Font)
+            message_to_screen("0", BLACK, (j * SQUARE + 5, i * SQUARE), Font)
             pygame.draw.rect(screen, RED, [j * SQUARE, i * SQUARE, SQUARE, SQUARE], width=4 )
             sleep(SPEED)
             pygame.display.update()
